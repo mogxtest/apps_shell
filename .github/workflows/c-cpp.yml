@@ -49,7 +49,7 @@ jobs:
         id: extract-prs
         run: |
           # 提取所有PR链接
-          PR_LINKS=$(echo "${{ github.event.comment.body }}" | grep -oE 'https://github.com/[^/ ]+/pull/[0-9]+' | sort | uniq)
+          PR_LINKS=$(echo "${{ github.event.comment.body }}" | grep -oE 'https://github.com/[^/]+/[^/]+/pull/[0-9]+' | sort | uniq)
           echo "PR_LINKS:"
           echo "$PR_LINKS"
        
