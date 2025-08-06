@@ -66,7 +66,9 @@ jobs:
           echo "PR_LINKS_ARRAY=${PR_LINKS_ARRAY}"
           pr_links_formatted=$(echo "$PR_LINKS_ARRAY" | jq '. | join(",")')
           # echo "pr_links=[${pr_links_formatted}]" >> $GITHUB_OUTPUT
-          echo "pr_links=${PR_LINKS_ARRAY}" >> $GITHUB_OUTPUT
+          # echo "pr_links=${PR_LINKS_ARRAY}" >> $GITHUB_OUTPUT
+          pr_links=$(echo "$PR_LINKS_ARRAY" | jq -c '.')
+          echo "pr_links=${pr_links}" >> $GITHUB_OUTPUT
           echo "pr_links=${pr_links}"
           
           echo "Detected PRs:"
