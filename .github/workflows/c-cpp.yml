@@ -63,8 +63,10 @@ jobs:
           
           # 转换为JSON数组并用单行格式输出
           PR_LINKS_ARRAY=$(echo "$PR_LINKS" | jq -R -s 'split("\n") | map(select(. != ""))')
+          echo "PR_LINKS_ARRAY=${PR_LINKS_ARRAY}"
           pr_links_formatted=$(echo "$PR_LINKS_ARRAY" | jq '. | join(",")')
-          echo "pr_links=[${pr_links_formatted}]" >> $GITHUB_OUTPUT
+          # echo "pr_links=[${pr_links_formatted}]" >> $GITHUB_OUTPUT
+          echo "pr_links=${PR_LINKS_ARRAY}" >> $GITHUB_OUTPUT
           echo "pr_links=${pr_links}"
           
           echo "Detected PRs:"
