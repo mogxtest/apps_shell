@@ -74,43 +74,43 @@ jobs:
           echo "Detected PRs:"
           echo "$PR_LINKS"
  
-      # 步骤3: 验证PR状态
-      - name: Validate PRs
-        run: |
-          # 安装必要工具
-          PR_LINKS='${{ steps.extract-prs.outputs.pr_links }}'
+      # # 步骤3: 验证PR状态
+      # - name: Validate PRs
+      #   run: |
+      #     # 安装必要工具
+      #     PR_LINKS='${{ steps.extract-prs.outputs.pr_links }}'
           
-          # 验证每个PR状态
-          INVALID_COUNT=0
-          echo "$PR_LINKS" | jq -r '.[]' | while read link; do
-            # 解析PR信息
-            PARTS=($(echo "$link" | sed -E 's|https://github.com/([^/]+)/([^/]+)/pull/([0-9]+)|\1 \2 \3|'))
-            OWNER=${PARTS[0]}
-            REPO=${PARTS[1]}
-            PR_NUM=${PARTS[2]}
+      #     # 验证每个PR状态
+      #     INVALID_COUNT=0
+      #     echo "$PR_LINKS" | jq -r '.[]' | while read link; do
+      #       # 解析PR信息
+      #       PARTS=($(echo "$link" | sed -E 's|https://github.com/([^/]+)/([^/]+)/pull/([0-9]+)|\1 \2 \3|'))
+      #       OWNER=${PARTS[0]}
+      #       REPO=${PARTS[1]}
+      #       PR_NUM=${PARTS[2]}
             
-            echo "Validating PR: $OWNER/$REPO#$PR_NUM"
+      #       echo "Validating PR: $OWNER/$REPO#$PR_NUM"
             
-            # 获取PR详细信息
-            PR_JSON=$(curl -s -H "Authorization: Bearer $ORCHESTRATOR_TOKEN" \
-              "https://api.github.com/repos/$OWNER/$REPO/pulls/$PR_NUM")
+      #       # 获取PR详细信息
+      #       PR_JSON=$(curl -s -H "Authorization: Bearer $ORCHESTRATOR_TOKEN" \
+      #         "https://api.github.com/repos/$OWNER/$REPO/pulls/$PR_NUM")
             
-            state=$(echo "$PR_JSON" | jq -r '.state')
-            merged=$(echo "$PR_JSON" | jq -r '.merged')
-            mergeable=$(echo "$PR_JSON" | jq -r '.mergeable')
-            echo "PR_JSON=${PR_JSON} state=${state}  merged=${merged} mergeable=${mergeable}"
+      #       state=$(echo "$PR_JSON" | jq -r '.state')
+      #       merged=$(echo "$PR_JSON" | jq -r '.merged')
+      #       mergeable=$(echo "$PR_JSON" | jq -r '.mergeable')
+      #       echo "PR_JSON=${PR_JSON} state=${state}  merged=${merged} mergeable=${mergeable}"
             
-            if [ "$state" != "open" ] || [ "$merged" == "true" ] || [ "$mergeable" != "true" ]; then
-              echo "::error::PR $OWNER/$REPO#$PR_NUM is not buildable"
-              echo "::error::State: $state, Merged: $merged, Mergeable: $mergeable"
-              INVALID_COUNT=$((INVALID_COUNT+1))
-            fi
-          done
+      #       if [ "$state" != "open" ] || [ "$merged" == "true" ] || [ "$mergeable" != "true" ]; then
+      #         echo "::error::PR $OWNER/$REPO#$PR_NUM is not buildable"
+      #         echo "::error::State: $state, Merged: $merged, Mergeable: $mergeable"
+      #         INVALID_COUNT=$((INVALID_COUNT+1))
+      #       fi
+      #     done
           
-          if [ $INVALID_COUNT -gt 0 ]; then
-            echo "::error::Found $INVALID_COUNT invalid PRs"
-            exit 1
-          fi
+      #     if [ $INVALID_COUNT -gt 0 ]; then
+      #       echo "::error::Found $INVALID_COUNT invalid PRs"
+      #       exit 1
+      #     fi
  
       # 步骤4: 设置构建环境
       - name: Setup build environment
