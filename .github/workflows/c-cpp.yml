@@ -213,13 +213,10 @@ jobs:
             echo "status=success" >> $GITHUB_OUTPUT
             echo "message=BlueOS 构建成功" >> $GITHUB_OUTPUT
             echo "label=build-success"  >> $GITHUB_OUTPUT
-            # echo "::set-output name=status::success"
-            # echo "::set-output name=message::✅ BlueOS 构建成功"
-            # echo "::set-output name=label::build-success"
           else
-            echo "::set-output name=status::failure"
-            echo "::set-output name=message::❌ BlueOS 构建失败"
-            echo "::set-output name=label::build-failed"
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "message=BlueOS 构建失败" >> $GITHUB_OUTPUT
+            echo "label=build-failed"  >> $GITHUB_OUTPUT
           fi
  
       # 步骤9: 发送最终通知
@@ -232,11 +229,6 @@ jobs:
           MESSAGE='${{ steps.build-result.outputs.message }}'
           LABEL='${{ steps.build-result.outputs.label }}'
           RUN_URL='${{ steps.init.outputs.run_url }}'
-           
-          # 移除构建中标签
-          curl -s -X DELETE \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ steps.init.outputs.source_number }}/labels/build-in-progress"
             
           # 添加结果标签
           curl -s -X POST \
