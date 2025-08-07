@@ -201,8 +201,8 @@ jobs:
           # 进度通知
           RUN_URL='${{ steps.init.outputs.run_url }}'
           repo init -u https://github.com/vivoblueos/manifests.git -b main -m manifest.xml && repo sync
-          cd build/ci
-          python3 run_ci.py
+          ls .
+          python3 build/ci/run_ci.py
           
         
         # 超时设置
