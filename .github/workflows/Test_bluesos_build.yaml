@@ -195,7 +195,7 @@ jobs:
       # 步骤7: 执行构建
       - name: Build BlueOS
         run: |
-          mkdir buleos
+          mkdir blueos
           cd blueos
            
           # 进度通知
