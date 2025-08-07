@@ -5,4 +5,4 @@ on: [push, pull_request]
  
 jobs:
   use-common:
-    uses: mogxtest/repo-orchestrator/.github/workflows/common-workflow.yml@main
+    uses: mogxtest/repo-orchestrator/.github/workflows/build_pr.yml@main
