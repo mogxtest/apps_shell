@@ -1,4 +1,4 @@
-name: BlueOS Standalone CI
+name: BlueOS build Test
  
 on:
   issue_comment:
